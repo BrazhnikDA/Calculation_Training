@@ -31,7 +31,7 @@ class Object:
             return self.setSalary(value)
         if key == 3:
             return self.setDescription(value)
-
+            
     def getName(self):
         return self.Name
 
