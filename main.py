@@ -1,3 +1,5 @@
+import pandas as pd
+import openpyxl
 from prettytable import PrettyTable  # Для отображения таблиц в консоли
 from Information import Information  # Подключаем наш класс
 
@@ -63,6 +65,30 @@ def main():
     res        = int(salarySt - tmp)
     print("На столько переплачивает студент",res)
     print("На столько переплачивает группа студентов", res*22)
+    df = pd.DataFrame({'Наиминование':
+                       [],
+                       'Стоимость/Затраты':
+                       []})
+    df.to_excel('./teams.xlsx')
+    filename = './teams.xlsx'
+    wb = openpyxl.load_workbook(filename=filename)
+    sheet = wb['Sheet1']
+    for i in range(estimation.ListObject.__len__()):
+        new_row = [i+1,estimation.ListObject[i].Name,int(estimation.ListObject[i].Salary/22)]
+        sheet.append(new_row)
+    wb.save(filename)
+    '''
+    for i in range(estimation.ListObject.__len__()):
+        td.append(estimation.ListObject[i].Name)
+        td.append(int(estimation.ListObject[i].Salary / 22))
+    td_data = td[:]
+    columns = 2
+    while td_data:
+        df.add_row(td_data[:columns])
+        td_data = td_data[columns:]
+    '''
+
+
     # На будущее
     # Построить график [x,y] где по x количество месяцев за 6 лет, по y сумма денег, нарисовать 2 линии потрачено и заработано при полном наборе предметов (онлайн,офлайн)
     # Добавить ещё 2 линии с тем сколько бы было потрачено, если бы предметы были только "нужные" по нашему мнению
