@@ -23,24 +23,24 @@ class Information:
         return obj.__getitem__(Object, 3)
 
     # Спарсить данные с файла json, если ошибка выкидываем exception
-    def ParseJson(self):
+    def ParseJson(self, _path):
         try:
-            patients_df = pd.read_json("C:\\offline2.json")
+            patients_df = pd.read_json(_path)
             patients_df.head()
             return patients_df
         except Exception:
             print("Файл с данными не удалось прочитать!")
 
     # Функция для начала работы класса (разбор полученных значений из json)
-    def Start(self):
-        offline = self.ParseJson()
+    def Start(self, _path):
+        parse = self.ParseJson(_path)
 
         # Получения значения из JSON по названию ключа
         try:
-            name = offline["Name"].values
-            count = offline["Count"].values
-            salary = offline["Salary"].values
-            descrip = offline["Description"].values
+            name = parse["Name"].values
+            count = parse["Count"].values
+            salary = parse["Salary"].values
+            descrip = parse["Description"].values
         except Exception:
             print("Файл json не содержит указанный ключ!")
             return
