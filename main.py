@@ -1,4 +1,7 @@
 import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
 import openpyxl
 from prettytable import PrettyTable  # Для отображения таблиц в консоли
 from Information import Information  # Подключаем наш класс
@@ -31,8 +34,10 @@ def CreateT(estimation):
     rmp = 0
     for i in range(estimation.ListObject.__len__()):
         td.append(estimation.ListObject[i].Name)
-        td.append(int(estimation.ListObject[i].Salary/22))
-        rmp = int(rmp + estimation.ListObject[i].Salary/22)
+        td.append(int(estimation.ListObject[i].Salary/22)*int(estimation.ListObject[i].Count))
+        if i == 0:
+            continue
+        rmp +=int(estimation.ListObject[i].Salary/22)*int(estimation.ListObject[i].Count)
         # td.append(info.ListObject[i].Salary * 12* info.ListObject[i].Count)
 
     columns = len(th)
@@ -65,6 +70,8 @@ def main():
     res        = int(salarySt - tmp)
     print("На столько переплачивает студент",res)
     print("На столько переплачивает группа студентов", res*22)
+    groups = []
+    cal    = []
     df = pd.DataFrame({'Наиминование':
                        [],
                        'Стоимость/Затраты':
@@ -74,9 +81,27 @@ def main():
     wb = openpyxl.load_workbook(filename=filename)
     sheet = wb['Sheet1']
     for i in range(estimation.ListObject.__len__()):
-        new_row = [i+1,estimation.ListObject[i].Name,int(estimation.ListObject[i].Salary/22)]
+        new_row = [i+1,estimation.ListObject[i].Name,int(int(estimation.ListObject[i].Salary)*int(estimation.ListObject[i].Count)/22)]
+        groups.append(estimation.ListObject[i].Name)
+        cal.append(int(int(estimation.ListObject[i].Salary)*int(estimation.ListObject[i].Count)/22))
         sheet.append(new_row)
     wb.save(filename)
+    wb.close()
+    '''
+    plt.bar(groups,cal)
+    #plt.show()
+    vals = [24, 17, 53, 21, 35]
+    labels = ["Ford", "Toyota", "BMV", "AUDI", "Jaguar"]
+    fig, ax = plt.subplots()
+    ax.pie(vals, labels=labels)
+    ax.axis("equal")
+    #plt.show()
+'''
+    fig, ax = plt.subplots()
+    ax.pie(cal,labels=groups)
+    ax.axis("equal")
+    plt.show()
+
     '''
     for i in range(estimation.ListObject.__len__()):
         td.append(estimation.ListObject[i].Name)
