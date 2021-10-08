@@ -55,14 +55,14 @@ def main():
     countLecturer  = info.ListObject[5].Count
     salaryLecturer = info.ListObject[5].Salary
     salarySt       = info.ListObject[0].Salary
-    print("Попробуем подсчитать примерную стоимость обучения в вузе.")
+    print("Попробуем подсчитать примерную стоимость оффлайн обучения в вузе.")
     print("За 6 лет программы обучения нам потребуется (учитывая все симестры) изучить n предметов.")
     print("Если взять, то что 1 преподаватель может вести 3 предмета, нам потруебся - ", countLecturer,
           "преподавателей")
     print("Средняя зарплата преподавателя по России - ", salaryLecturer)
-    print("За 6 лет обучения это - ", salaryLecturer * 12 * 6 * countLecturer,
+    print("За 4 года обучения это - ", salaryLecturer * 12 * 4 * countLecturer,
           "именно столько уйдёт на зарплату ", countLecturer, "преподавателям за 6 лет обучения")
-    print("Теперь подсчитаем остальные затраты при оффлайн обучении: ")
+    print("Теперь подсчитаем остальные затраты в месяц при оффлайн обучении: ")
     CreateTable(info)
     print("А теперь подсчитаем сколько уходит на обучение одного студента:")
     estimation = info
@@ -87,6 +87,19 @@ def main():
         sheet.append(new_row)
     wb.save(filename)
     wb.close()
+
+    print("\nСоставим уравнение сколько стоит весь процесс обучения")
+    print("Все расходы в месяц умножить на 12 месяцев обучения и умножить на 4 года")
+    sum = 0
+    for i in range(info.ListObject.__len__() - 1):
+        sum += (info.ListObject[i + 1].Salary * info.ListObject[i + 1].Count)
+
+    print(sum, '* 12 * 4 = ', sum * 12 * 4)
+    print("Доход от платных студентов за 4 года обучения")
+    print("Стоимость обучения в месяц * 12 * количество студентов *  4")
+    print(info.ListObject[0].Salary, " * 12 * ", info.ListObject[0].Count, " * 4 = ",
+          info.ListObject[0].Salary * 12 * info.ListObject[0].Count * 4)
+
     '''
     plt.bar(groups,cal)
     #plt.show()
@@ -122,11 +135,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# info.ListObject[0].Name, info.ListObject[0].Count, info.ListObject[0].Salary, info.ListObject[0].Description,
-#            info.ListObject[1].Name, info.ListObject[1].Count, info.ListObject[1].Salary, info.ListObject[1].Description,
-#            info.ListObject[2].Name, info.ListObject[2].Count, info.ListObject[2].Salary, info.ListObject[2].Description,
-#           info.ListObject[3].Name, info.ListObject[3].Count, info.ListObject[3].Salary, info.ListObject[3].Description,
-#            info.ListObject[4].Name, info.ListObject[4].Count, info.ListObject[4].Salary, info.ListObject[4].Description,
-#            info.ListObject[5].Name, info.ListObject[5].Count, info.ListObject[5].Salary, info.ListObject[5].Description,
-#            info.ListObject[6].Name, info.ListObject[6].Count, info.ListObject[6].Salary, info.ListObject[6].Description,
-#            info.ListObject[7].Name, info.ListObject[7].Count, info.ListObject[7].Salary, info.ListObject[7].Description
