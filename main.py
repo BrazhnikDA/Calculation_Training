@@ -36,15 +36,17 @@ def CheckPayMonth(res):
 def CreateLinearEquation(type):
     print("\nСоставим уравнение сколько стоит весь процесс обучения")
     print("Все расходы в месяц умножить на 12 месяцев обучения и умножить на 4 года")
-    sum = 0
+    month = 0
     for i in range(type.ListObject.__len__() - 1):
-        sum += (type.ListObject[i + 1].Salary * type.ListObject[i + 1].Count)
+        month += (type.ListObject[i + 1].Salary * type.ListObject[i + 1].Count)
 
-    print(sum, '* 12 * 4 = ', sum * 12 * 4)
+    print(month, '* 12 * 4 = ', month * 12 * 4)
     print("Доход от платных студентов за 4 года обучения")
     print("Стоимость обучения в месяц * 12 * количество студентов *  4")
-    print(type.ListObject[0].Salary, " * 12 * ", type.ListObject[0].Count, " * 4 = ",
+    print(type.ListObject[0].Salary, "* 12 * ", type.ListObject[0].Count, " * 4 =",
           type.ListObject[0].Salary * 12 * type.ListObject[0].Count * 4)
+
+    return month * 12 * 4
 
 
 def CreateChart(num, groups, title):
@@ -78,7 +80,7 @@ def CreateT(estimation):
 
 def main():
     offline = Information()
-    offline.Start("C:\\offline2.json")
+    offline.Start("C:\\offline.json")
 
     countLecturer = offline.ListObject[5].Count
     salaryLecturer = offline.ListObject[5].Salary
@@ -97,13 +99,13 @@ def main():
 
     print("А теперь подсчитаем сколько уходит на обучение одного студента:")
     tmp = CreateT(offline)
-    res = int(salarySt - tmp)
-    CheckPayMonth(res)
+    resOff = int(salarySt - tmp)
+    CheckPayMonth(resOff)
 
     print("Импортируем вторую таблицу в Excel")
     importExcel(offline)
 
-    CreateLinearEquation(offline)
+    sumOff = CreateLinearEquation(offline)
 
     groups = []
     cal = []
@@ -122,10 +124,18 @@ def main():
 
     print("А теперь подсчитаем сколько уходит на обучение одного студента, но уже онлайн:")
     tmp = CreateT(online)
-    res = int(online.ListObject[0].Salary - tmp)
-    CheckPayMonth(res)
+    resOn = int(online.ListObject[0].Salary - tmp)
+    CheckPayMonth(resOn)
 
-    CreateLinearEquation(online)
+    sumOn = CreateLinearEquation(online)
+
+    print("\nПодведём итоги!")
+
+    if sumOn < sumOff:
+        print("Обучение онлайн дешевле обходится вузу на - ", sumOff - sumOn)
+    else:
+        print("Обучение оффлайн дешевле обходится вузу на - ", sumOn - sumOff)
+    print("За 4 года обучения")
 
     # На будущее
     # Построить график [x,y] где по x количество месяцев за 6 лет, по y сумма денег, нарисовать 2 линии потрачено и заработано при полном наборе предметов (онлайн,офлайн)
