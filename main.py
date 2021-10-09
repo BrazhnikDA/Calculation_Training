@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 from prettytable import PrettyTable  # Для отображения таблиц в консоли
 
 from ImportExcel import importExcel
 from Information import Information  # Подключаем наш класс
-
+from pandas.plotting import table
 
 # Отображение таблицы в консоль, на вход подаётся обьект класса Information
 def CreateTable(info):
@@ -50,12 +51,28 @@ def CreateLinearEquation(type):
 
 
 def CreateChart(num, groups, title):
-    fig, ax = plt.subplots()
-    ax.pie(num, labels=groups, autopct='%1.1f%%', startangle=180)
-    plt.title(title)
-    ax.axis("equal")
-    plt.show()
+    th = ['Name', 'Salary']
+    td = {
+        'Name': [],
+        'Salary': []
+        }
+    for i in range(num.__len__()):
+        td['Name'].append(groups[i])
+        td['Salary'].append(num[i])
 
+    df = pd.DataFrame(td, columns=th)
+
+    ax1 = plt.subplot(121, aspect='equal')
+    df.plot(kind='pie', y='Salary', ax=ax1, autopct='%1.1f%%',startangle=0, shadow=False, labels=df['Name'], legend=False, fontsize=8)
+    plt.legend(loc=2, prop={'size': 5})
+    ax2 = plt.subplot(122)
+    plt.axis('off')
+    tbl = table(ax2, df, loc='center')
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(8)
+    plt.savefig('This_is_diagramme.jpg')
+    plt.show()
+   # plt.savefig('This_is_diagramme.jpg')
 def CreateT(estimation):
     th = ['Наименование', 'Стоимость/Затраты']
     td = []
