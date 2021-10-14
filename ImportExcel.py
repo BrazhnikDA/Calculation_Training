@@ -8,15 +8,18 @@ def importExcel(estimation):
                            [],
                        'Стоимость/Затраты':
                            []})
-    df.to_excel('./teams.xlsx')
-    filename = './teams.xlsx'
-    wb = openpyxl.load_workbook(filename=filename)
-    sheet = wb['Sheet1']
-    for i in range(estimation.ListObject.__len__()):
-        new_row = [i + 1, estimation.ListObject[i].Name,
-                   int(int(estimation.ListObject[i].Salary) * int(estimation.ListObject[i].Count) / 22)]
-        groups.append(estimation.ListObject[i].Name)
-        cal.append(int(int(estimation.ListObject[i].Salary) * int(estimation.ListObject[i].Count) / 22))
-        sheet.append(new_row)
-    wb.save(filename)
-    wb.close()
+    try:
+        df.to_excel('./teams.xlsx')
+        filename = './teams.xlsx'
+        wb = openpyxl.load_workbook(filename=filename)
+        sheet = wb['Sheet1']
+        for i in range(estimation.ListObject.__len__()):
+            new_row = [i + 1, estimation.ListObject[i].Name,
+                    int(int(estimation.ListObject[i].Salary) * int(estimation.ListObject[i].Count) / 22)]
+            groups.append(estimation.ListObject[i].Name)
+            cal.append(int(int(estimation.ListObject[i].Salary) * int(estimation.ListObject[i].Count) / 22))
+            sheet.append(new_row)
+        wb.save(filename)
+        wb.close()
+    except:
+        print("Не удалось импортировать данные в Excel, возможно файл открыт на компьютере")
