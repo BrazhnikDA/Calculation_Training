@@ -1,10 +1,13 @@
+import os
+
 import matplotlib.pyplot as plt
 import pandas as pd
-from prettytable import PrettyTable  # Для отображения таблиц в консоли
-
-from ImportExcel import importExcel
-from Information import Information  # Подключаем наш класс
 from pandas.plotting import table
+from prettytable import PrettyTable  # Для удобного отображения таблиц в консоли
+
+from ImportExcel import importExcel  # Подключаем функцию и файла для вывода в Excel
+from Information import Information  # Подключаем наш класс
+
 
 # Отображение таблицы в консоль, на вход подаётся обьект класса Information
 def CreateTable(info):
@@ -26,6 +29,7 @@ def CreateTable(info):
         td_data = td_data[columns:]
     print(table)
 
+
 def CheckPayMonth(res):
     if (res > 0):
         print("На столько переплачивает студент - ", abs(res))
@@ -33,6 +37,7 @@ def CheckPayMonth(res):
     else:
         print("Столько не доплачивает студент - ", abs(res))
         print("Столько не доплачивает группа студентов - ", abs(res * 22))
+
 
 def CreateLinearEquation(type):
     print("\nСоставим уравнение сколько стоит весь процесс обучения")
@@ -55,7 +60,7 @@ def CreateChart(num, groups, title):
     td = {
         'Name': [],
         'Salary': []
-        }
+    }
     for i in range(num.__len__()):
         td['Name'].append(groups[i])
         td['Salary'].append(num[i])
@@ -63,7 +68,8 @@ def CreateChart(num, groups, title):
     df = pd.DataFrame(td, columns=th)
 
     ax1 = plt.subplot(121, aspect='equal')
-    df.plot(kind='pie', y='Salary', ax=ax1, autopct='%1.1f%%',startangle=0, shadow=False, labels=df['Name'], legend=False, fontsize=8)
+    df.plot(kind='pie', y='Salary', ax=ax1, autopct='%1.1f%%', startangle=0, shadow=False, labels=df['Name'],
+            legend=False, fontsize=8)
     plt.legend(loc=2, prop={'size': 5})
     ax2 = plt.subplot(122)
     plt.axis('off')
@@ -72,7 +78,9 @@ def CreateChart(num, groups, title):
     tbl.set_fontsize(8)
     plt.savefig('This_is_diagramme.jpg')
     plt.show()
-   # plt.savefig('This_is_diagramme.jpg')
+
+
+# plt.savefig('This_is_diagramme.jpg')
 def CreateT(estimation):
     th = ['Наименование', 'Стоимость/Затраты']
     td = []
@@ -95,9 +103,31 @@ def CreateT(estimation):
     return rmp
 
 
+# Проверка на доступ к папке (параметр - путь до папки)
+# проверка существования файла или каталога,
+# проверка возможности чтения,
+# проверка открытия директории
+def checkAccessFolder(_path):
+    __file__ = _path
+    if os.access(__file__, os.F_OK) == False:
+        return False
+    if os.access(__file__, os.R_OK) == False:
+        return False
+    if os.access(__file__, os.X_OK) == False:
+        return False
+
+    return True
+
+
 def main():
+    if checkAccessFolder(os.getcwd() + "\\offline.json") == False:
+        print('Нет доступа к ' + os.getcwd() + "\\offline.json")
+        if checkAccessFolder(os.getcwd() + "\\online.json") == False:
+            print('Нет доступа к ' + os.getcwd() + "\\online.json")
+        return
+
     offline = Information()
-    offline.Start("C:\\offline.json")
+    offline.Start(os.getcwd() + "\\offline.json")
 
     countLecturer = offline.ListObject[5].Count
     salaryLecturer = offline.ListObject[5].Salary
@@ -130,13 +160,13 @@ def main():
         groups.append(offline.ListObject[i].Name)
         cal.append(int(int(offline.ListObject[i].Salary) * int(offline.ListObject[i].Count) / 22))
 
-    CreateChart(cal, groups ,'Диаграмма затрат на обучение')
+    CreateChart(cal, groups, 'Диаграмма затрат на обучение')
 
     offline.ListObject.clear()  # Отчистим список с уже имеющимися данными
 
     print("\n\nСделаем расчёт для онлайн обучения вычеркнув по нашему мнению, не очень нужные предметы")
     online = Information()
-    online.Start("C:\\online.json")
+    online.Start(os.getcwd() + "\\online.json")
     CreateTable(online)
 
     print("А теперь подсчитаем сколько уходит на обучение одного студента, но уже онлайн:")
@@ -157,4 +187,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
