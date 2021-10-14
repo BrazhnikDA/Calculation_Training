@@ -104,12 +104,12 @@ def main():
     salarySt = offline.ListObject[0].Salary
 
     print("Попробуем подсчитать примерную стоимость оффлайн обучения в вузе.")
-    print("За 6 лет программы обучения нам потребуется (учитывая все симестры) изучить n предметов.")
+    print("За 4 года программы обучения нам потребуется (учитывая все симестры) изучить n предметов.")
     print("Если взять, то что 1 преподаватель может вести 3 предмета, нам потруебся - ", countLecturer,
           "преподавателей")
     print("Средняя зарплата преподавателя по России - ", salaryLecturer)
     print("За 4 года обучения это - ", salaryLecturer * 12 * 4 * countLecturer,
-          "именно столько уйдёт на зарплату ", countLecturer, "преподавателям за 6 лет обучения")
+          "именно столько уйдёт на зарплату ", countLecturer, "преподавателям за 4 года обучения")
 
     print("Теперь подсчитаем остальные затраты в месяц при оффлайн обучении: ")
     CreateTable(offline)
@@ -154,32 +154,7 @@ def main():
         print("Обучение оффлайн дешевле обходится вузу на - ", sumOn - sumOff)
     print("За 4 года обучения")
 
-    # На будущее
-    # Построить график [x,y] где по x количество месяцев за 6 лет, по y сумма денег, нарисовать 2 линии потрачено и заработано при полном наборе предметов (онлайн,офлайн)
-    # Добавить ещё 2 линии с тем сколько бы было потрачено, если бы предметы были только "нужные" по нашему мнению
-
 
 if __name__ == '__main__':
     main()
 
-'''
-    plt.bar(groups,cal)
-    #plt.show()
-    vals = [24, 17, 53, 21, 35]
-    labels = ["Ford", "Toyota", "BMV", "AUDI", "Jaguar"]
-    fig, ax = plt.subplots()
-    ax.pie(vals, labels=labels)
-    ax.axis("equal")
-    #plt.show()
-'''
-
-'''
-   for i in range(estimation.ListObject.__len__()):
-       td.append(estimation.ListObject[i].Name)
-       td.append(int(estimation.ListObject[i].Salary / 22))
-   td_data = td[:]
-   columns = 2
-   while td_data:
-       df.add_row(td_data[:columns])
-       td_data = td_data[columns:]
-   '''
